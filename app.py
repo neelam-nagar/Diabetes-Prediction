@@ -6,13 +6,8 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
 from sklearn.metrics import accuracy_score
 
-# ---------------- PAGE CONFIG ----------------
-st.set_page_config(
-    page_title="Diabetes Prediction",
-    layout="centered"
-)
+st.set_page_config(page_title="Diabetes Prediction", layout="centered")
 
-# ---------------- CUSTOM CSS (DESIGN) ----------------
 st.markdown("""
 <style>
 body {
@@ -50,21 +45,27 @@ h1, h2 {
 label {
     font-weight: 600;
 }
+hr {
+    display: none;
+}
 </style>
 """, unsafe_allow_html=True)
 
-# ---------------- TITLE ----------------
 st.title("🩺 Diabetes Prediction Using Machine Learning")
-st.caption("Predict diabetes risk using medical data and machine learning")
 
-# ---------------- LOAD DATA ----------------
+st.markdown(
+    "<p style='text-align:center; color:#9CA3AF; margin-bottom:30px;'>"
+    "Predict diabetes risk using medical data and machine learning"
+    "</p>",
+    unsafe_allow_html=True
+)
+
 @st.cache_data
 def load_data():
     return pd.read_csv("Data/diabetes.csv")
 
 data = load_data()
 
-# ---------------- PREPARE DATA ----------------
 X = data.drop("Outcome", axis=1)
 y = data["Outcome"]
 
@@ -75,11 +76,9 @@ X_train, X_test, y_train, y_test = train_test_split(
     X_scaled, y, test_size=0.2, random_state=42
 )
 
-# ---------------- TRAIN MODEL ----------------
 model = SVC(kernel="linear")
 model.fit(X_train, y_train)
 
-# ---------------- INPUT CARD ----------------
 st.markdown("<div class='input-card'>", unsafe_allow_html=True)
 
 st.subheader("Enter Medical Details")
@@ -97,7 +96,6 @@ predict = st.button("Predict")
 
 st.markdown("</div>", unsafe_allow_html=True)
 
-# ---------------- PREDICTION ----------------
 if predict:
     input_data = np.array([[preg, glu, bp, skin, ins, bmi, dpf, age]])
     input_scaled = scaler.transform(input_data)
